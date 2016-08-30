@@ -1,0 +1,9 @@
+{
+  "name": "orahi-rest-api",
+  "version": "0.0.0",
+  "description": "OrahiRestAPI",
+  "main": "server.js",
+  "author": {
+    "name": "WORK"
+  }
+}
