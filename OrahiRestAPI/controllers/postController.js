@@ -3,9 +3,19 @@
     var post = function ( req, res )
     {
         var value = new Value( req.body );
-        value.save();
-        res.status( 201 );
-        res.send( value );
+        value.save( function ( err )
+        {
+            if ( err )
+            {
+                res.status( 500 );
+                res.send( err );
+            }
+            else
+            {
+                res.status( 201 );
+                res.json( value );
+            }
+        });        
     }
 
     return {

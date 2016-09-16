@@ -1,31 +1,4 @@
-﻿//var express = require( 'express' );
-
-//var getRouteById = function ( Value , uriPath)
-//{
-//    /*Start Router*/
-//    var router = express.Router();
-//    router.route( uriPath )
-//        .get( function ( req, res )
-//        {
-
-//            Value.findById( req.params.bookId, function ( err, value )
-//            {
-//                if ( err )
-//                    res.status( 500 ).send( err );
-//                else
-//                    res.json( value );
-//            })
-
-//        });
-
-//    /*End Router*/
-
-//    return router;
-//}
-
-//module.exports = getRouteById;
-
-var express = require( 'express' );
+﻿var express = require( 'express' );
 
 /**
  * Start database models variables
@@ -45,18 +18,35 @@ var Book = require( '../models/bookModel' );
  */
 
 /**
+ * Start get MiddleWare variables based on the various models in the database
+ */
+var bookMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
+var bankMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
+var emergencyServiceMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
+var eventMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
+var forexMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
+var hotelMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
+var houseMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
+var mobileMoneyMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
+var rentalMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
+var restaurantMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
+/**
+ * End get MiddleWare variables
+ */
+
+/**
  * Start get Controllers variables based on the various models in the database
  */
-var bookController = require( '../controllers/getByIdController' )( Book );
-var bankController = require( '../controllers/getByIdController' )( Book );
-var emergencyServiceController = require( '../controllers/getByIdController' )( Book );
-var eventController = require( '../controllers/getByIdController' )( Book );
-var forexController = require( '../controllers/getByIdController' )( Book );
-var hotelController = require( '../controllers/getByIdController' )( Book );
-var houseController = require( '../controllers/getByIdController' )( Book );
-var mobileMoneyController = require( '../controllers/getByIdController' )( Book );
-var rentalController = require( '../controllers/getByIdController' )( Book );
-var restuarantController = require( '../controllers/getByIdController' )( Book );
+var bookController = require( '../controllers/getByIdController' )();
+var bankController = require( '../controllers/getByIdController' )();
+var emergencyServiceController = require( '../controllers/getByIdController' )();
+var eventController = require( '../controllers/getByIdController' )();
+var forexController = require( '../controllers/getByIdController' )();
+var hotelController = require( '../controllers/getByIdController' )();
+var houseController = require( '../controllers/getByIdController' )();
+var mobileMoneyController = require( '../controllers/getByIdController' )();
+var rentalController = require( '../controllers/getByIdController' )();
+var restuarantController = require( '../controllers/getByIdController' )();
 /**
  * End get Controllers variables
  */
@@ -72,6 +62,23 @@ var getRoutes = function ()
      */
     var router = express.Router();
 
+    /**
+     *Start applying middleware
+     */
+
+    router.use( '/getBooks/:_Id', bookMiddleWare.use );
+    router.use( '/getBanks/:_Id', bankMiddleWare.use );
+    router.use( '/getEmergencyServices/:_Id', emergencyServiceMiddleWare.use );
+    router.use( '/getEvents/:_Id', eventMiddleWare.use );
+    router.use( '/getForexs/:_Id', forexMiddleWare.use );
+    router.use( '/getHotels/:_Id', hotelMiddleWare.use );
+    router.use( '/getHouses/:_Id', houseMiddleWare.use );
+    router.use( '/getMobileMoneyAgents/:_Id', mobileMoneyMiddleWare.use );
+    router.use( '/getRentals/:_Id', rentalMiddleWare.use );
+    router.use( '/getRestaurants/:_Id', restaurantMiddleWare.use );
+    /**
+     *End applying middleware
+     */
     router.route( '/getBooks/:_Id' )
         .get( bookController.get );
 
