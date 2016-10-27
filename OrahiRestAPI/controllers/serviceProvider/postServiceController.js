@@ -1,8 +1,11 @@
-﻿var postController = function ( Value )
+﻿var postServiceController = function ( Value )
 {
     var post = function ( req, res )
     {
+       
         var value = new Value( req.body );
+        value.serviceProvider = req.decoded._doc._id;
+
         value.save( function ( err )
         {
             if ( err )
@@ -15,7 +18,8 @@
                 res.status( 201 );
                 res.json( value );
             }
-        });        
+        })
+            
     }
 
     return {
@@ -23,4 +27,4 @@
     }
 }
 
-module.exports = postController;
+module.exports = postServiceController;

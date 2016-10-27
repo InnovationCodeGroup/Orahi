@@ -3,16 +3,17 @@
 /**
  * Start database models variables
  */
+var User = require( '../models/userModel' );
 var Book = require( '../models/bookModel' );
-//var Bank = require( '../models/bankModel' );
-//var EmergencyService = require( '../models/emergencyServiceModel' );
-//var Event = require( '../models/eventModel' );
-//var Forex = require( '../models/forexModel' );
-//var Hotel = require( '../models/hotelModel' );
-//var House = require( '../models/houseModel' );
-//var MobileMoney = require( '../models/mobileMoneyAgentModel' );
-//var Rental = require( '../models/rentalModel' );
-//var Restaurant = require( '../models/restaurantModel' );
+var Bank = require( '../models/bankModel' );
+var EmergencyService = require( '../models/emergencyServiceModel' );
+var Events = require( '../models/eventModel' );
+var Forex = require( '../models/forexModel' );
+var Hotel = require( '../models/hotelModel' );
+var House = require( '../models/houseModel' );
+var MobileMoney = require( '../models/mobileMoneyAgentModel' );
+var Rental = require( '../models/rentalModel' );
+var Restaurant = require( '../models/restaurantModel' );
 /**
  *End database models variables
  */
@@ -20,16 +21,17 @@ var Book = require( '../models/bookModel' );
 /**
  * Start put MiddleWare variables based on the various models in the database
  */
+var userMiddleWare = require( '../middleWare/findByIdMiddleWare' )( User );
 var bookMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
-var bankMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
-var emergencyServiceMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
-var eventMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
-var forexMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
-var hotelMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
-var houseMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
-var mobileMoneyMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
-var rentalMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
-var restaurantMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
+var bankMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Bank );
+var emergencyServiceMiddleWare = require( '../middleWare/findByIdMiddleWare' )( EmergencyService );
+var eventMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Events );
+var forexMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Forex );
+var hotelMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Hotel );
+var houseMiddleWare = require( '../middleWare/findByIdMiddleWare' )( House );
+var mobileMoneyMiddleWare = require( '../middleWare/findByIdMiddleWare' )( MobileMoney );
+var rentalMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Rental );
+var restaurantMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Restaurant );
 /**
  * End put MiddleWare variables
  */
@@ -37,6 +39,7 @@ var restaurantMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book )
 /**
  * Start put Controllers variables based on the various models in the database
  */
+var userController = require( '../controllers/putController' )();
 var bookController = require( '../controllers/putController' )();
 var bankController = require( '../controllers/putController' )();
 var emergencyServiceController = require( '../controllers/putController' )();
@@ -54,18 +57,19 @@ var restuarantController = require( '../controllers/putController' )();
 /**
  * Start module main function
  */
-var putRoutes = function ()
+var putRoutes = function ( app )
 {
-
+    //var serviceProiderAuth = require( '../middleWare/serviceProiderAuth' )( app );
     /**
      * Start routes
      */
     var router = express.Router();
 
+    //router.use( serviceProiderAuth.use );
     /**
      *Start applying middleware
      */
-
+    router.use( '/putUser/:_Id', userMiddleWare.use );
     router.use( '/putBooks/:_Id', bookMiddleWare.use );
     router.use( '/putBanks/:_Id', bankMiddleWare.use );
     router.use( '/putEmergencyServices/:_Id', emergencyServiceMiddleWare.use );
@@ -79,35 +83,39 @@ var putRoutes = function ()
     /**
      *End applying middleware
      */
+
+    router.route( '/putUser/:_Id' )
+        .put( userController.put );
+
     router.route( '/putBooks/:_Id' )
         .put( bookController.put );
 
     router.route( '/putBanks/:_Id' )
-        .put( bookController.put );
+        .put( bankController.put );
 
     router.route( '/putEmergencyServices/:_Id' )
-        .put( bookController.put );
+        .put( emergencyServiceController.put );
 
     router.route( '/putEvents/:_Id' )
-        .put( bookController.put );
+        .put( eventController.put );
 
     router.route( '/putForexs/:_Id' )
-        .put( bookController.put );
+        .put( forexController.put );
 
     router.route( '/putHotels/:_Id' )
-        .put( bookController.put );
+        .put( hotelController.put );
 
     router.route( '/putHouses/:_Id' )
-        .put( bookController.put );
+        .put( houseController.put );
 
     router.route( '/putMobileMoneyAgents/:_Id' )
-        .put( bookController.put );
+        .put( mobileMoneyController.put );
 
     router.route( '/putRentals/:_Id' )
-        .put( bookController.put );
+        .put( rentalController.put );
 
     router.route( '/putRestaurants/:_Id' )
-        .put( bookController.put );
+        .put( restuarantController.put );
 
 
     /**

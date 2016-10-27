@@ -3,16 +3,17 @@
 /**
  * Start database models variables
  */
+var User = require( '../models/userModel' );
 var Book = require( '../models/bookModel' );
-//var Bank = require( '../models/bankModel' );
-//var EmergencyService = require( '../models/emergencyServiceModel' );
-//var Event = require( '../models/eventModel' );
-//var Forex = require( '../models/forexModel' );
-//var Hotel = require( '../models/hotelModel' );
-//var House = require( '../models/houseModel' );
-//var MobileMoney = require( '../models/mobileMoneyAgentModel' );
-//var Rental = require( '../models/rentalModel' );
-//var Restaurant = require( '../models/restaurantModel' );
+var Bank = require( '../models/bankModel' );
+var EmergencyService = require( '../models/emergencyServiceModel' );
+var Events = require( '../models/eventModel' );
+var Forex = require( '../models/forexModel' );
+var Hotel = require( '../models/hotelModel' );
+var House = require( '../models/houseModel' );
+var MobileMoney = require( '../models/mobileMoneyAgentModel' );
+var Rental = require( '../models/rentalModel' );
+var Restaurant = require( '../models/restaurantModel' );
 /**
  *End database models variables
  */
@@ -20,16 +21,17 @@ var Book = require( '../models/bookModel' );
 /**
  * Start patch MiddleWare variables based on the various models in the database
  */
+var userMiddleWare = require( '../middleWare/findByIdMiddleWare' )( User );
 var bookMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
-var bankMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
-var emergencyServiceMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
-var eventMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
-var forexMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
-var hotelMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
-var houseMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
-var mobileMoneyMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
-var rentalMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
-var restaurantMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
+var bankMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Bank );
+var emergencyServiceMiddleWare = require( '../middleWare/findByIdMiddleWare' )( EmergencyService );
+var eventMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Events );
+var forexMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Forex );
+var hotelMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Hotel );
+var houseMiddleWare = require( '../middleWare/findByIdMiddleWare' )( House );
+var mobileMoneyMiddleWare = require( '../middleWare/findByIdMiddleWare' )( MobileMoney );
+var rentalMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Rental );
+var restaurantMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Restaurant );
 /**
  * End patch MiddleWare variables
  */
@@ -37,6 +39,7 @@ var restaurantMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book )
 /**
  * Start patch Controllers variables based on the various models in the database
  */
+var userController = require( '../controllers/patchController' )();
 var bookController = require( '../controllers/patchController' )();
 var bankController = require( '../controllers/patchController' )();
 var emergencyServiceController = require( '../controllers/patchController' )();
@@ -54,18 +57,19 @@ var restuarantController = require( '../controllers/patchController' )();
 /**
  * Start module main function
  */
-var patchRoutes = function ()
+var patchRoutes = function ( app )
 {
-
+    //var serviceProiderAuth = require( '../middleWare/serviceProiderAuth' )( app );
     /**
      * Start routes
      */
     var router = express.Router();
 
+    //router.use( serviceProiderAuth.use );
     /**
      *Start applying middleware
      */
-
+    router.use( '/patchUser/:_Id', userMiddleWare.use );
     router.use( '/patchBooks/:_Id', bookMiddleWare.use );
     router.use( '/patchBanks/:_Id', bankMiddleWare.use );
     router.use( '/patchEmergencyServices/:_Id', emergencyServiceMiddleWare.use );
@@ -79,35 +83,39 @@ var patchRoutes = function ()
     /**
      *End applying middleware
      */
+
+    router.route( '/patchUser/:_Id' )
+        .patch( userController.patch );
+
     router.route( '/patchBooks/:_Id' )
         .patch( bookController.patch );
 
     router.route( '/patchBanks/:_Id' )
-        .patch( bookController.patch );
+        .patch( bankController.patch );
 
     router.route( '/patchEmergencyServices/:_Id' )
-        .patch( bookController.patch );
+        .patch( emergencyServiceController.patch );
 
     router.route( '/patchEvents/:_Id' )
-        .patch( bookController.patch );
+        .patch( eventController.patch );
 
     router.route( '/patchForexs/:_Id' )
-        .patch( bookController.patch );
+        .patch( forexController.patch );
 
     router.route( '/patchHotels/:_Id' )
-        .patch( bookController.patch );
+        .patch( hotelController.patch );
 
     router.route( '/patchHouses/:_Id' )
-        .patch( bookController.patch );
+        .patch( houseController.patch );
 
     router.route( '/patchMobileMoneyAgents/:_Id' )
-        .patch( bookController.patch );
+        .patch( mobileMoneyController.patch );
 
     router.route( '/patchRentals/:_Id' )
-        .patch( bookController.patch );
+        .patch( rentalController.patch );
 
     router.route( '/patchRestaurants/:_Id' )
-        .patch( bookController.patch );
+        .patch( restuarantController.patch );
 
 
     /**

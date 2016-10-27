@@ -2,7 +2,16 @@
 {
     var get = function ( req, res )
     {
-        Value.find(function ( err, values )
+        var query = {};
+        if ( req.query.serviceType )
+        {
+            query.serviceType = req.query.serviceType;
+        }
+        if ( req.query.serviceProvider )
+        {
+            query.serviceProvider = req.query.serviceProvider;
+        }
+        Value.find(query, function ( err, values )
         {
             if ( err )
             {

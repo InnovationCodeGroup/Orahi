@@ -3,16 +3,17 @@
 /**
  * Start database models variables
  */
+var User = require( '../models/userModel' );
 var Book = require( '../models/bookModel' );
-//var Bank = require( '../models/bankModel' );
-//var EmergencyService = require( '../models/emergencyServiceModel' );
-//var Event = require( '../models/eventModel' );
-//var Forex = require( '../models/forexModel' );
-//var Hotel = require( '../models/hotelModel' );
-//var House = require( '../models/houseModel' );
-//var MobileMoney = require( '../models/mobileMoneyAgentModel' );
-//var Rental = require( '../models/rentalModel' );
-//var Restaurant = require( '../models/restaurantModel' );
+var Bank = require( '../models/bankModel' );
+var EmergencyService = require( '../models/emergencyServiceModel' );
+var Events = require( '../models/eventModel' );
+var Forex = require( '../models/forexModel' );
+var Hotel = require( '../models/hotelModel' );
+var House = require( '../models/houseModel' );
+var MobileMoney = require( '../models/mobileMoneyAgentModel' );
+var Rental = require( '../models/rentalModel' );
+var Restaurant = require( '../models/restaurantModel' );
 /**
  *End database models variables
  */
@@ -20,6 +21,7 @@ var Book = require( '../models/bookModel' );
 /**
  * Start delete MiddleWare variables based on the various models in the database
  */
+var userMiddleWare = require( '../middleWare/findByIdMiddleWare' )( User );
 var bookMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
 var bankMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
 var emergencyServiceMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book );
@@ -37,6 +39,7 @@ var restaurantMiddleWare = require( '../middleWare/findByIdMiddleWare' )( Book )
 /**
  * Start delete Controllers variables based on the various models in the database
  */
+var userController = require( '../controllers/deleteController' )();
 var bookController = require( '../controllers/deleteController' )();
 var bankController = require( '../controllers/deleteController' )();
 var emergencyServiceController = require( '../controllers/deleteController' )();
@@ -54,18 +57,20 @@ var restuarantController = require( '../controllers/deleteController' )();
 /**
  * Start module main function
  */
-var deleteRoutes = function ()
+var deleteRoutes = function ( app )
 {
 
+    //var serviceProiderAuth = require( '../middleWare/serviceProiderAuth' )( app );
     /**
      * Start routes
      */
     var router = express.Router();
 
+    //router.use( serviceProiderAuth.use );
     /**
      *Start applying middleware
      */
-
+    router.use( '/deleteUser/:_Id', userMiddleWare.use );
     router.use( '/deleteBooks/:_Id', bookMiddleWare.use );
     router.use( '/deleteBanks/:_Id', bankMiddleWare.use );
     router.use( '/deleteEmergencyServices/:_Id', emergencyServiceMiddleWare.use );
@@ -79,6 +84,9 @@ var deleteRoutes = function ()
     /**
      *End applying middleware
      */
+    router.route( '/deleteUser/:_Id' )
+        .delete( bookController.del );
+
     router.route( '/deleteBooks/:_Id' )
         .delete( bookController.del );
 
