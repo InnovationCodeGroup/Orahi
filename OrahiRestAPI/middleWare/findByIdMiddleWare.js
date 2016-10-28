@@ -17,7 +17,7 @@
             else
             {
                 res.status( 500 );
-                send( 'No book found' );
+                send( 'No value found' );
             }
         })
     }

@@ -12,7 +12,7 @@ var ServiceModel = require( '../../models/serviceModel' );
 /**
  * Start get Controllers variables based on the various models in the database
  */
-var servicesController = require( '../../controllers/getController' )( ServiceModel);
+var servicesController = require( '../../controllers/user/getController' )( ServiceModel);
 
 /**
  * End get Controllers variables

@@ -12,7 +12,7 @@ var userModel = require( '../../models/userModel' );
 /**
  * Start get Controllers variables based on the various models in the database
  */
-var userController = require( '../../controllers/getController' )( userModel );
+var userController = require( '../../controllers/admin/getController' )( userModel );
 
 /**
  * End get Controllers variables

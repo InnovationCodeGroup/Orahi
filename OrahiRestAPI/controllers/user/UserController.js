@@ -11,9 +11,10 @@ var userController = function ( app )
     app.use( '/api/user', userLoginRouter );
 
     var getRouter = require( '../../routes/user/getServicesRoutes' )( app );
-    //var getRouterById = require( '../../routes/user/getRouteById' )( app );
     app.use( '/api/user', getRouter );
-    //app.use( '/api/user', getRouterById );
+
+    var getRouterById = require( '../../routes/user/getRouteById' )( app );
+    app.use( '/api/user', getRouterById );
 }
 
 module.exports = userController;
