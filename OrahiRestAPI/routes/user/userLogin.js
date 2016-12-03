@@ -36,15 +36,20 @@ var userLogin = function (app)
                 {
 
                     //check whether the passwords matches
-                    if ( user.password != req.body.password )
+
+                    user.comparePassword( req.body.password, function ( err, isMatch )
                     {
-                        res.json( { success: false, message: 'Incorrect password' });
-                    } else
-                    {
+                        if ( err ) throw err;
+                        
+                        console.log( 'Password:', isMatch );
+                        if ( !isMatch )
+                        {
+                            res.json( { success: false, message: 'Incorrect password' });
+                        }
                         //if the user is found and the password is right 
                         //create token
                         var token = jwt.sign( user, app.get( 'userSecret' ), {
-                            expiresIn: 1440 //expires in 24 hours
+                            expiresIn: 10000 //expires in 24 hours
                         });
 
                         //return the information including token as json
@@ -53,8 +58,9 @@ var userLogin = function (app)
                             message: 'Authentication approved',
                             token: token,
                         });
-                    }
-                }
+                       
+                    });
+                }                
             });
     });
 

@@ -21,8 +21,11 @@ var serviceController = require( '../../controllers/serviceProvider/postServiceC
 /**
  * Start module main function
  */
-var postServices = function ( app )
+var postServices = function ( app, imageDir )
 {
+    //Image Upload middleware
+    var imageUpload = require( '../../middleWare/imageUpload' )( imageDir )
+
     var serviceProiderAuth = require( '../../middleWare/serviceProviderAuth' )( app );
     /**
      * Start routes
@@ -31,6 +34,7 @@ var postServices = function ( app )
 
     router.use( serviceProiderAuth.use );
 
+    router.use( '/postService', imageUpload.use );
 
     router.route( '/postService' )
         .post( serviceController.post );

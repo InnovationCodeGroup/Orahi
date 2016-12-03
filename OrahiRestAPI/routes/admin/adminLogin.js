@@ -25,6 +25,7 @@ var adminLogin = function (app)
         //find the user
         Admin.findOne( {
             email: req.body.email,
+            adminReg: true,
             admin: true
         }, function ( err, admin )
             {
@@ -37,15 +38,20 @@ var adminLogin = function (app)
                 {
 
                     //check whether the passwords matches
-                    if ( admin.password != req.body.password )
+
+                    admin.comparePassword( req.body.password, function ( err, isMatch )
                     {
-                        res.json( { success: false, message: 'Incorrect password' });
-                    } else
-                    {
+                        if ( err ) throw err;
+
+                        console.log( 'Password:', isMatch );
+                        if ( !isMatch )
+                        {
+                            res.json( { success: false, message: 'Incorrect password' });
+                        }
                         //if the user is found and the password is right 
                         //create token
                         var token = jwt.sign( admin, app.get( 'adminSecret' ), {
-                            expiresIn: 1440 //expires in 24 hours
+                            expiresIn: 10000 //expires in 24 hours
                         });
 
                         //return the information including token as json
@@ -54,7 +60,8 @@ var adminLogin = function (app)
                             message: 'Authentication approved',
                             token: token,
                         });
-                    }
+
+                    });
                 }
             });
     });

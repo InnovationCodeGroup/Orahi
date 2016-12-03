@@ -1,0 +1,8 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/2837a2920481fb5c39d6efa11ef40657fd670d13/nodemailer-stub-transport/nodemailer-stub-transport.d.ts",
+    "raw": "registry:dt/nodemailer-stub-transport#1.1.0+20161022144132",
+    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/2837a2920481fb5c39d6efa11ef40657fd670d13/nodemailer-stub-transport/nodemailer-stub-transport.d.ts"
+  }
+}

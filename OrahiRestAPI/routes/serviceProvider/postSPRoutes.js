@@ -22,12 +22,18 @@ var spController = require( '../../controllers/serviceProvider/postSPController'
 /**
  * Start module main function
  */
-var postRoutes = function ( app )
+var postRoutes = function ( imageDir )
 {
+    //Image Upload middleware
+    var imageUpload = require( '../../middleWare/imageUpload' )( imageDir )
+    
+
     /**
      * Start routes
      */
     var router = express.Router();
+
+    router.use( '/registerServiceProvider', imageUpload.use );
 
     router.route( '/registerServiceProvider' )
         .post( spController.post );

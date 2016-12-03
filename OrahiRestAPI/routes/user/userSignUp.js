@@ -11,17 +11,22 @@ var User = require( '../../models/userModel' );
 
 
 
+
 /**
  * Start module main function
  */
-var postRoutes = function ()
+var postRoutes = function ( imageDir )
 {
+
+    //Image Upload middleware
+    var imageUpload = require( '../../middleWare/imageUpload' )( imageDir )
 
     /**
      * Start routes
      */
     var router = express.Router();
 
+    router.use( '/registerUser', imageUpload.use );
 
     router.post( '/registerUser', function ( req, res )
     {
@@ -37,20 +42,35 @@ var postRoutes = function ()
                 res.json( { Success: false, message: 'User already exists' });
             } else if ( !user )
             {
-                var user = new User( req.body );
-                user.save( function ( err )
+                User.findOne( { userName: req.body.userName }, function ( err, user )
                 {
                     if ( err )
                     {
                         res.status( 500 );
-                        res.send( err );
+                        send( err );
                     }
-                    else
+                    else if ( user )
                     {
-                        res.status( 201 );
-                        res.json( user );
+                        res.json( { Success: false, message: 'UserName already exists' });
                     }
-                });
+                    else if ( !user )
+                    {
+                        var user = new User( req.body );
+                        user.save( function ( err )
+                        {
+                            if ( err )
+                            {
+                                res.status( 500 );
+                                res.send( err );
+                            }
+                            else
+                            {
+                                res.status( 201 );
+                                res.json( user );
+                            }
+                        });
+                    }
+                });                 
             }
         });
     });

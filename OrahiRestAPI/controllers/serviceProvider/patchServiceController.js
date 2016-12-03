@@ -2,28 +2,53 @@
 {
     var patch = function ( req, res )
     {
-        if ( req.decoded._doc._id === req.value.serviceProvider )
+        if ( req.body._id )
+            delete req.body._id;
+       
+        if ( req.body.image )
         {
-            if ( req.body._id )
-                delete req.body._id;
-            for ( var p in req.body )
+            UserModel.findOne( { _id: req.decoded._doc._id }, function ( err, user )
             {
-                req.value[p] = req.body[p];
-            }
-            req.value.save( function ( err )
-            {
-                if ( err )
+                if ( user.image1 && fs.existsSync( user.image1 ) )
                 {
-                    res.status( 500 );
-                    res.send( err );
+                    fs.unlinkSync( user.image1 )
                 }
-                else
+                if ( user.image2 &&  fs.existsSync( user.image2 ) )
                 {
-                    res.status( 201 );
-                    res.json( req.value );
+                    fs.unlinkSync( user.image2 )
                 }
-            });
+                if ( user.image3 &&  fs.existsSync( user.image3 ) )
+                {
+                    fs.unlinkSync( user.image3 )
+                }
+                if ( user.image4 && fs.existsSync( user.image4 ) )
+                {
+                    fs.unlinkSync( user.image4 )
+                }
+                if ( user.image5 && fs.existsSync( user.image5 ) )
+                {
+                    fs.unlinkSync( user.image5 )
+                }
+
+            })
         }
+        for ( var p in req.body )
+        {
+            req.value[p] = req.body[p];
+        }
+        req.value.save( function ( err )
+        {
+            if ( err )
+            {
+                res.status( 500 );
+                res.send( err );
+            }
+            else
+            {
+                res.status( 201 );
+                res.json( req.value );
+            }
+        });
     }
 
 

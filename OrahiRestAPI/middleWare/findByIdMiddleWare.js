@@ -17,7 +17,7 @@
             else
             {
                 res.status( 500 );
-                send( 'No value found' );
+                res.send( 'No value found' );
             }
         })
     }

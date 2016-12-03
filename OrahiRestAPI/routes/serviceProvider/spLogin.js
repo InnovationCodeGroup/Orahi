@@ -3,7 +3,7 @@
 /**
  * Start database models variables
  */
-var User = require( '../../models/serviceProviderModel' );
+var serviceProvider = require( '../../models/serviceProviderModel' );
 
 /**
  *End database models variables
@@ -23,28 +23,32 @@ var spLogin = function ( app )
     router.post( '/authenticate', function ( req, res )
     {
         //find the user
-        User.findOne( {
+        serviceProvider.findOne( {
             email: req.body.email
-        }, function ( err, user )
+        }, function ( err, sp )
             {
                 if ( err )
                     throw err;
-                if ( !user )
+                if ( !sp )
                 {
                     res.json( { success: false, message: 'Service Provider doesnot exist' });
-                } else if ( user )
+                } else if ( sp )
                 {
 
                     //check whether the passwords matches
-                    if ( user.password != req.body.password )
+                    sp.comparePassword( req.body.password, function ( err, isMatch )
                     {
-                        res.json( { success: false, message: 'Incorrect password' });
-                    } else
-                    {
+                        if ( err ) throw err;
+
+                        console.log( 'Password:', isMatch );
+                        if ( !isMatch )
+                        {
+                            res.json( { success: false, message: 'Incorrect password' });
+                        }
                         //if the user is found and the password is right 
                         //create token
-                        var token = jwt.sign( user, app.get( 'serviceProviderSecret' ), {
-                            expiresIn: 1440 //expires in 24 hours
+                        var token = jwt.sign( sp, app.get( 'serviceProviderSecret' ), {
+                            expiresIn: 10000 //expires in 24 hours
                         });
 
                         //return the information including token as json
@@ -53,7 +57,8 @@ var spLogin = function ( app )
                             message: 'Authentication approved',
                             token: token,
                         });
-                    }
+
+                    });
                 }
             });
     });

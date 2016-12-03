@@ -30,8 +30,11 @@ var serviceController = require( '../../controllers/serviceProvider/putServiceCo
 /**
  * Start module main function
  */
-var putRoutes = function ( app )
+var putRoutes = function ( app, imageDir )
 {
+    //Image Upload middleware
+    var imageUpload = require( '../../middleWare/imageUpload' )( imageDir )
+
     var serviceProiderAuth = require( '../../middleWare/serviceProviderAuth' )( app );
     /**
      * Start routes
@@ -39,6 +42,8 @@ var putRoutes = function ( app )
     var router = express.Router();
 
     router.use( serviceProiderAuth.use );
+
+    router.use( '/putService/:_Id', imageUpload.use );
     /**
      *Start applying middleware
      */
