@@ -1,4 +1,6 @@
-﻿var patchController = function ()
+﻿var responses = require("../responses")();
+
+var patchController = function ()
 {
     var patch = function ( req, res )
     {
@@ -15,13 +17,11 @@
             {
                 if ( err )
                 {
-                    res.status( 500 );
-                    res.send( err );
+                    responses.failureInput(req, res, err);
                 }
                 else
                 {
-                    res.status( 201 );
-                    res.json( req.value );
+                    responses.successfulInput(req, res, "Friend association updated");
                 }
             });
         }

@@ -33,6 +33,7 @@ bb.extend( app, {
 require( './controllers/user/UserController' )( app, imageDir );
 require( './controllers/serviceProvider/ServiceProviderController' )( app, imageDir );
 require( './controllers/admin/adminController' )( app, imageDir );
+require( './controllers/readImage' )( app );
 require( './controllers/financial/financialController' )( app );
 
 

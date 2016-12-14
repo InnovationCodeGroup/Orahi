@@ -1,4 +1,5 @@
-﻿var findUsingIdMiddleWare = function (Value)
+﻿var responses = require("../controllers/responses")();
+var findUsingIdMiddleWare = function (Value)
 {
     var use = function ( req, res, next )
     {
@@ -7,8 +8,7 @@
         {
             if ( err )
             {
-                res.status( 500 );
-                send( err );
+                responses.failureOutput(req, res, err);
             }
             else if ( value )
             {
@@ -17,8 +17,7 @@
             }
             else
             {
-                res.status( 500 );
-                res.send( 'No value found' );
+                responses.dataConflict(req, res, "No value found");
             }
         })
     }

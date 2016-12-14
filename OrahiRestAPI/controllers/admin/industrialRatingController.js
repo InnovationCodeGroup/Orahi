@@ -1,4 +1,6 @@
-﻿var industrialRatingController = function ( Value )
+﻿var responses = require("../responses")();
+
+var industrialRatingController = function (Value)
 {
     var post = function ( req, res )
     {
@@ -6,13 +8,12 @@
         {
             if ( err )
             {
-                res.status( 500 );
-                res.send( err );
+                responses.failureInput(req, res, err);
             }
             var resultLength = Object.keys( result ).length;
             if ( resultLength != 0 )
             {
-                res.json( { success: false, message: 'Service Provider rating already exists' });
+                responses.dataConflict(req, res, "Service provider rating already exists");
             }
             else if ( resultLength === 0 )
             {
@@ -22,13 +23,11 @@
                 {
                     if ( err )
                     {
-                        res.status( 500 );
-                        res.send( err );
+                        responses.failureInput(req, res, err);
                     }
                     else
                     {
-                        res.status( 201 );
-                        res.json( value );
+                        responses.successfulInput(req, res, "Industrial rating set");
                     }
                 })
             }

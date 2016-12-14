@@ -1,4 +1,6 @@
-﻿var deleteController = function ()
+﻿var responses = require("../responses")();
+
+var deleteController = function ()
 {
     var del = ( function ( req, res )
     {
@@ -9,13 +11,11 @@
             {
                 if ( err )
                 {
-                    res.status( 500 );
-                    res.send( err );
+                    responses.failureInput(req, res, err);
                 }
                 else
                 {
-                    res.status( 201 );
-                    res.send( 'Removed' );
+                    responses.successfulInput(req, res, "Service Removed");
                 }
             });
         }      

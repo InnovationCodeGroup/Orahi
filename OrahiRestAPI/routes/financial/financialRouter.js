@@ -19,7 +19,7 @@ var financialRouter = function ( app )
 
     router.post( '/success', function ( req, res )
     {
-        paymentModel.findOne( { _id: req.body.RequestId }, function ( err, result )
+        paymentModel.findOne( { _id: req.body.id }, function ( err, result )
         {
             if ( err )
             {
@@ -51,7 +51,7 @@ var financialRouter = function ( app )
 
     router.post( '/failure', function ( req, res )
     {
-        paymentModel.findOne( { _id: req.body.RequestId }, function ( err, result )
+        paymentModel.findOne({ _id: req.body.id }, function (err, result)
         {
             if ( err )
             {

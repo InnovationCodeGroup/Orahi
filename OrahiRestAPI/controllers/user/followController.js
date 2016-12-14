@@ -1,4 +1,6 @@
-﻿var followController = function ( Value )
+﻿var responses = require("../responses")();
+
+var followController = function (Value)
 {
     var post = function ( req, res )
     {
@@ -19,20 +21,18 @@
                     var resultLength = Object.keys( result ).length;
                     if ( resultLength != 0 )
                     {
-                        res.json( { success: false, message: 'Already following user' });
+                        responses.dataConflict(req, res, "Already following user");
                     } else if ( resultLength === 0 )
                     {
                         value.save( function ( err )
                         {
                             if ( err )
                             {
-                                res.status( 500 );
-                                res.send( err );
+                                responses.failureOutput(req, res, err);
                             }
                             else
                             {
-                                res.status( 201 );
-                                res.json( value );
+                                response.successfulOutput(req, res, value);
                             }
                         })
                     }

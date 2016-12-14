@@ -1,4 +1,5 @@
-﻿var mongoose = require( 'mongoose' );
+﻿var mongoose = require('mongoose');
+var responses = require("../responses")();
 
 var getController = function ( Value, friends )
 {
@@ -25,16 +26,13 @@ var getController = function ( Value, friends )
             {
                 if ( err )
                 {
-                    res.status( 500 );
-                    res.send( err );
+                    responses.failureOutput(req, res, err);
                 } else if ( result.length == 0 )
                 {
-                    res.status( 500 );
-                    res.json( { Success: false, message: "You do not have any logs" });
+                    responses.dataConflict(req, res, "You do not have logs");
                 } else if ( result.length > 0 )
                 {
-                    console.log( result.friendLog );
-                    res.json( result );
+                    responses.successfulOutput(req, res, result);
                 }
             })
         } else
@@ -43,15 +41,13 @@ var getController = function ( Value, friends )
             {
                 if ( err )
                 {
-                    res.status( 500 );
-                    res.send( err );
+                    responses.failureOutput(req, res, err);
                 } else if ( value.length == 0 )
                 {
-                    res.status( 500 );
-                    res.json( { Success: false, message: "You do not have any logs" });
+                    responses.failureOutput(req, res, "You do not have any logs");
                 } else if ( value.length > 0 )
                 {
-                    res.json( value );
+                    responses.successfulOutput(req, res, value);
                 }
             })
         }

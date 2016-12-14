@@ -12,7 +12,7 @@ var telcomModel = require( '../../models/telcomModel' );
 /**
  * Start get Controllers variables based on the various models in the database
  */
-var telecomController = require( '../../controllers/user/getController' )( telcomModel );
+var telecomController = require( '../../controllers/user/getTelecomController' )( telcomModel );
 
 /**
  * End get Controllers variables

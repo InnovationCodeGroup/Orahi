@@ -1,4 +1,5 @@
-﻿var telcomController = function ( Value )
+﻿var responses = require("../responses")();
+var telcomController = function (Value)
 {
     var post = function ( req, res )
     {
@@ -12,7 +13,9 @@
             var resultLength = Object.keys( result ).length;
             if ( resultLength != 0 )
             {
-                res.json( { success: false, message: 'Telecom identifier already exists' });
+
+                responses.dataConflict(req, res, "Telecom identifier already exists");
+
             }
             else if ( resultLength === 0 )
             {
@@ -22,13 +25,11 @@
                 {
                     if ( err )
                     {
-                        res.status( 500 );
-                        res.send( err );
+                        responses.failureInput(req, res, err);
                     }
                     else
                     {
-                        res.status( 201 );
-                        res.json( value );
+                        responses.successfulInput(req, res, "Telecom registered");
                     }
                 })
             }

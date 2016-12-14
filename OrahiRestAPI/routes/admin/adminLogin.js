@@ -10,6 +10,7 @@ var Admin = require( '../../models/userModel' );
  */
 
 var jwt = require('jsonwebtoken');
+var responses = require("../../controllers/responses")();
 
 
 var adminLogin = function (app)
@@ -33,7 +34,7 @@ var adminLogin = function (app)
                     throw err;
                 if ( !admin )
                 {
-                    res.json( { success: false, message: 'Not an administrator in this system' });
+                    responses.authenticationFailed(req, res, "Not an administrator in this system");
                 } else if ( admin )
                 {
 
@@ -46,7 +47,7 @@ var adminLogin = function (app)
                         console.log( 'Password:', isMatch );
                         if ( !isMatch )
                         {
-                            res.json( { success: false, message: 'Incorrect password' });
+                            responses.authenticationFailed(req, res, "Incorrect password");
                         }
                         //if the user is found and the password is right 
                         //create token
@@ -55,12 +56,7 @@ var adminLogin = function (app)
                         });
 
                         //return the information including token as json
-                        res.json( {
-                            success: true,
-                            message: 'Authentication approved',
-                            token: token,
-                        });
-
+                        responses.authenticationApproved(req, res, "Authentication approved", token);
                     });
                 }
             });

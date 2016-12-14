@@ -10,6 +10,7 @@ var User = require( '../../models/userModel' );
  */
 
 var jwt = require('jsonwebtoken');
+var responses = require("../../controllers/responses")();
 
 
 var userLogin = function (app)
@@ -31,7 +32,7 @@ var userLogin = function (app)
                     throw err;
                 if ( !user )
                 {
-                    res.json( { success: false, message: 'User doesnot exist' });
+                    responses.authenticationFailed(req, res, 'User doesnot exist' );
                 } else if ( user )
                 {
 
@@ -44,7 +45,7 @@ var userLogin = function (app)
                         console.log( 'Password:', isMatch );
                         if ( !isMatch )
                         {
-                            res.json( { success: false, message: 'Incorrect password' });
+                            responses.authenticationFailed(req, res, 'Incorrect password' );
                         }
                         //if the user is found and the password is right 
                         //create token
@@ -53,12 +54,7 @@ var userLogin = function (app)
                         });
 
                         //return the information including token as json
-                        res.json( {
-                            success: true,
-                            message: 'Authentication approved',
-                            token: token,
-                        });
-                       
+                        responses.authenticationApproved(req, res, "Authentication approved", token);
                     });
                 }                
             });

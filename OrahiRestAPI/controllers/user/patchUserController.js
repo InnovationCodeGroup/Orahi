@@ -1,5 +1,6 @@
 ﻿var UserModel = require( '../../models/userModel' );
-var fs = require( 'fs' );
+var fs = require('fs');
+var responses = require("../responses")();
 
 var patchUserController = function ()
 {
@@ -29,13 +30,11 @@ var patchUserController = function ()
         {
             if ( err )
             {
-                res.status( 500 );
-                res.send( err );
+                responses.failureInput(req, res, err);
             }
             else
             {
-                res.status( 201 );
-                res.json( req.value );
+                responses.successfulInput(req, res, "User updated");
             }
         });
     }

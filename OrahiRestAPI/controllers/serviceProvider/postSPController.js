@@ -1,4 +1,6 @@
-﻿var postController = function ( Value )
+﻿var responses = require("../responses")();
+
+var postController = function (Value)
 {
     var post = function ( req, res )
     {
@@ -11,7 +13,7 @@
             }
             else if ( value )
             {
-                res.json( { Success: false, message: 'Service Provider already exists' });
+                responses.dataConflict(req, res, "Service Provider already exists");
             }
             else if ( !value )
             {
@@ -21,13 +23,11 @@
                 {
                     if ( err )
                     {
-                        res.status( 500 );
-                        res.send( err );
+                        responses.failureInput(req, res, err);
                     }
                     else
                     {
-                        res.status( 201 );
-                        res.json( value );
+                        responses.successfulInput(req, res, "Service Provider saved");
                     }
                 })
             }

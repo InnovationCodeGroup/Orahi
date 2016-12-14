@@ -1,4 +1,6 @@
-﻿var getController = function ( Value )
+﻿var responses = require("../responses")();
+
+var getController = function (Value)
 {
     var get = function ( req, res )
     {
@@ -7,22 +9,18 @@
         if ( req.query.serviceProvider )
         {
             query.serviceProvider = req.query.serviceProvider;
-            Value.find( query, function ( err, values )
+            Value.find( query, function ( err, value )
             {
-                if ( err )
-                {
-                    res.status( 500 );
-                    res.send( err );
+                if (err) {
+                    responses.failureOutput(req, res, err);
                 }
                 else
-                    res.json( values );
+                    responses.successfulOutput(req, res, value);
             })
         } else
         {
-            res.json( {"activity":"failure", "message":"No service provider given"} );
+            responses.failureOutput(req, res, "No service provider given");
         }
-        
-
     }
 
     return {

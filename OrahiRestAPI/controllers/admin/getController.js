@@ -1,4 +1,6 @@
-﻿var getController = function (Value)
+﻿var responses = require("../responses")();
+
+var getController = function (Value)
 {
     var get = function ( req, res )
     {
@@ -11,15 +13,14 @@
         {
             query.serviceProvider = req.query.serviceProvider;
         }
-        Value.find(query, function ( err, values )
+        Value.find(query, function ( err, value )
         {
-            if ( err )
-            {
-                res.status( 500 );
-                res.send( err );
+            if (err) {
+                responses.failureOutput(req, res, err);
             }
-            else
-                res.json( values );
+            else {
+                responses.successfulOutput(req, res, value);
+            }
         })
 
     }

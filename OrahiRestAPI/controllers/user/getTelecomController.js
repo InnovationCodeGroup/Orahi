@@ -3,16 +3,10 @@ var getController = function (Value)
 {
     var get = function ( req, res )
     {
+
         var query = {};
-        if ( req.query.email )
-        {
-            query.email = req.query.email;
-        }
-        if ( req.query.userName )
-        {
-            query.userName = req.query.userName;
-        }
-        Value.find(query, function ( err, value )
+        
+        Value.find( query, function ( err, value )
         {
             if (err) {
                 responses.failureOutput(req, res, err);
@@ -21,6 +15,8 @@ var getController = function (Value)
                 responses.successfulOutput(req, res, value);
             }
         })
+       
+        
 
     }
 

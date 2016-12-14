@@ -11,15 +11,15 @@
         {
             query.serviceProvider = req.decoded._doc._id;
         }
-        Value.find(query, function ( err, values )
+        Value.find(query, function ( err, value )
         {
             if ( err )
             {
-                res.status( 500 );
-                res.send( err );
+                responses.failureOutput(req, res, err);
             }
-            else
-                res.json( values );
+            else {
+                responses.successfulOutput(req, res, value);
+            }
         })
 
     }

@@ -9,7 +9,9 @@ var serviceProvider = require( '../../models/serviceProviderModel' );
  *End database models variables
  */
 
-var jwt = require( 'jsonwebtoken' );
+var jwt = require('jsonwebtoken');
+
+var responses = require("../../controllers/responses")();
 
 
 var spLogin = function ( app )
@@ -31,7 +33,7 @@ var spLogin = function ( app )
                     throw err;
                 if ( !sp )
                 {
-                    res.json( { success: false, message: 'Service Provider doesnot exist' });
+                    responses.authenticationFailed(req, res, "Service Provider doesnot exist");
                 } else if ( sp )
                 {
 
@@ -43,7 +45,7 @@ var spLogin = function ( app )
                         console.log( 'Password:', isMatch );
                         if ( !isMatch )
                         {
-                            res.json( { success: false, message: 'Incorrect password' });
+                            responses.authenticationFailed(req, res, "Incorrect password");
                         }
                         //if the user is found and the password is right 
                         //create token
@@ -52,12 +54,7 @@ var spLogin = function ( app )
                         });
 
                         //return the information including token as json
-                        res.json( {
-                            success: true,
-                            message: 'Authentication approved',
-                            token: token,
-                        });
-
+                        responses.authenticationApproved(req, res, "Authentication approved", token);
                     });
                 }
             });

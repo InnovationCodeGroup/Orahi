@@ -1,4 +1,5 @@
-﻿var friends = require( '../../models/friendshipModel' );
+﻿var responses = require("../responses")();
+var friends = require('../../models/friendshipModel');
 var rating = require( '../../models/ratingModel' );
 var industrialRating = require( '../../models/industrialRating' );
 var publicRating = require( '../../models/publicRatingModel' );
@@ -30,7 +31,7 @@ var getController = function ( Value )
         }
     }
 
-    var callback = function ( serviceProvider, value, res )
+    var callback = function ( req, res, serviceProvider, value )
     {
         if ( serviceProviders[serviceProvider] == null || serviceProviders[serviceProvider] == "" )
         {
@@ -44,12 +45,10 @@ var getController = function ( Value )
         {
             for ( i = 0; i < dSP.length; i++ )
             {
-                console.log( dSP)
                 var SSP = serviceProviders[dSP[i]];
-                makeServiceProvider( SSP, mkserviceProviders, i );
-                
+                makeServiceProvider( SSP, mkserviceProviders, i );           
             }
-            res.json( JSON.parse( getServiceProviders ) );
+            responses.successfulOutput(req, res, JSON.parse(getServiceProviders));
 
             serviceProviders = [];
             getServiceProviders = '[';
@@ -59,8 +58,7 @@ var getController = function ( Value )
         }
         else
         {
-            num--;
-            
+            num--;       
         }          
 
     }
@@ -70,7 +68,7 @@ var getController = function ( Value )
         num = value * 7;
     }
 
-    var callback3 = function ( res )
+    var callback3 = function ( req, res )
     {
         if ( num == 1 )
         {
@@ -80,7 +78,7 @@ var getController = function ( Value )
                 makeServiceProvider( SSP, mkserviceProviders, i );
 
             }
-            res.json( JSON.parse( getServiceProviders ) );
+            responses.successfulOutput(req, res, JSON.parse(getServiceProviders));
 
             serviceProviders = [];
             getServiceProviders = '[';
@@ -90,11 +88,8 @@ var getController = function ( Value )
         else
         {
             num--;
-
         }  
     }
-
-
 
     var get = function ( req, res )
     {
@@ -107,13 +102,11 @@ var getController = function ( Value )
             {
                 if ( err )
                 {
-                    res.status( 500 );
-                    res.send( err );
+                    responses.failureOutput(req, res, err);
                 }
                 else if ( result.length == 0 )
                 {
-                    res.status( 500 );
-                    res.json( {success: false, message: "No service providers exist in this category"} );
+                    responses.failureOutput(req, res, "No service providers exist in this category");
                 }
                 else if ( result )
                 {
@@ -128,7 +121,7 @@ var getController = function ( Value )
 
                         var rate = 0;
                         var record = JSON.parse( '{"serviceProvider": ' + serviceProvider + ', "rating": "' + rate + '" }' );
-                        callback( result[i]._id, record, res );                  
+                        callback( req, res, result[i]._id, record );                  
 
                         //Ratings based on the public
                         publicRating.aggregate( [
@@ -148,7 +141,7 @@ var getController = function ( Value )
                             {
                                 if ( err )
                                 {
-                                    console.log( err );
+                                    responses.consoleFailure(err);
                                 } else 
                                 {
                                     if ( SP.length > 0 )
@@ -162,11 +155,11 @@ var getController = function ( Value )
                                         var public = JSON.parse( '{"serviceProvider": ' + serviceProvider + ', "rating": "' + rate + '" }' );
 
 
-                                        callback( SP[0].pr._id, public, res );
+                                        callback( req, res, SP[0].pr._id, public );
                                     } else
                                     {
-                                        callback3( res );
-                                        console.log('No public results')
+                                        callback3(req, res);
+                                        responses.consoleFailure('No public results');
                                     }
                                 }
                             }
@@ -201,11 +194,11 @@ var getController = function ( Value )
                                             '"locationLong":"' + SP[0].spr.location.long + '", "locationLat":"' + SP[0].spr.location.lat + '"}';
                                         var rate = parseInt( SP[0].rating ) * 0.25;
                                         var individual = JSON.parse( '{"serviceProvider": ' + serviceProvider + ', "rating": "' + rate + '" }' );
-                                        callback( SP[0].spr._id, individual, res );
+                                        callback( req, res, SP[0].spr._id, individual );
                                     } else
                                     {
-                                        callback3( res );
-                                        console.log( 'No individual results' );
+                                        callback3(req, res);
+                                        responses.consoleFailure('No individual results');
                                     }
 
                                 }
@@ -241,11 +234,11 @@ var getController = function ( Value )
 
                                         var rate = ( parseInt( SP[0].industrialRating ) * 0.05 ).toFixed( 2 );
                                         var industrial = JSON.parse( '{"serviceProvider": ' + serviceProvider + ', "rating": "' + rate + '" }' );
-                                        callback( SP[0].ir._id, industrial, res );
+                                        callback( req, res, SP[0].ir._id, industrial );
                                     } else
                                     {
-                                        callback3( res );
-                                        console.log( 'Industrial rating non existant' );
+                                        callback3(req, res);
+                                        responses.consoleFailure('Industrial rating non existant');
                                     }
 
                                 }
@@ -287,12 +280,12 @@ var getController = function ( Value )
                                                 '"locationLong":"' + SP.location.long + '", "locationLat":"' + SP.location.lat + '"}';
 
                                             var following = JSON.parse( '{"serviceProvider": ' + serviceProvider + ', "rating": "' + fRating + '" }' );
-                                            callback( SP._id, following, res );
+                                            callback( req, res, SP._id, following );
                                         });
                                     } else
                                     {
-                                        callback3( res );
-                                        console.log( 'Following ratings non existant' );
+                                        callback3(req, res);
+                                        responses.consoleFailure('Following ratings non existant');
                                     }
                                 }
                             }
@@ -332,12 +325,12 @@ var getController = function ( Value )
                                                 '"locationLong":"' + SP.location.long + '", "locationLat":"' + SP.location.lat + '"}';
 
                                             var accepted = JSON.parse( '{"serviceProvider": ' + serviceProvider + ', "rating": "' + aRating + '" }' );
-                                            callback( SP._id, accepted, res );
+                                            callback( req, res, SP._id, accepted );
                                         });
                                     } else
                                     {
-                                        callback3( res );
-                                        console.log( 'Accepted freinds ratings non existant' );
+                                        callback3(req, res);
+                                        responses.consoleFailure('Accepted freinds ratings non existant');
                                     }
 
                                 }
@@ -377,12 +370,12 @@ var getController = function ( Value )
                                                 '"locationLong":"' + SP.location.long + '", "locationLat":"' + SP.location.lat + '"}';
 
                                             var mutual = JSON.parse( '{"serviceProvider": ' + serviceProvider + ', "rating": "' + mRating + '" }' );
-                                            callback( SP._id, mutual, res );
+                                            callback( req, res, SP._id, mutual );
                                         });
                                     } else
                                     {
-                                        callback3( res );
-                                        console.log( 'Mutual friends ratings non existant' );
+                                        callback3(req, res);
+                                        responses.consoleFailure('Mutual friends ratings non existant');
                                     }
 
                                 }
@@ -394,8 +387,7 @@ var getController = function ( Value )
             })
         } else
         {
-            res.status( 500 );
-            res.json( { success: false, message: "Service type not given" });
+            responses.failureOutput(req, res, "Service type not given");
         }
 
         

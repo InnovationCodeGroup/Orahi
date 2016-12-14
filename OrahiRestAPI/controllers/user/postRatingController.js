@@ -3,7 +3,7 @@ var paymentModel = require( '../../models/paymentModel' );
 var logsModel = require( '../../models/logsModel' );
 var serviceproviders = require( '../../models/serviceProviderModel' );
 var mongoose = require( 'mongoose' );
-
+var responses = require("../responses")();
 
 var ratingController = function ( Value )
 {
@@ -22,15 +22,14 @@ var ratingController = function ( Value )
                 throw err;
             if ( result )
             {
-                res.json( { success: false, message: 'Rating exist' });
+                responses.dataConflict(req, res, "Rating exists");
             } else if ( !result )
             {
                 value.save( function ( err )
                 {
                     if ( err )
                     {
-                        res.status( 500 );
-                        res.send( err );
+                        responses.failureInput(req, res, err);
                     }
                     else
                     {
@@ -46,32 +45,25 @@ var ratingController = function ( Value )
 
                             logs.save( function ( err )
                             {
-                                if ( err ) console.log( err );
-                                else console.log( logs );
+                                if (err) responses.consoleFailure(err);
+                                else responses.consoleSuccess("Log " + logs._id + "saved");
                             })
 
                         }
 
                         var it = value.serviceProvider;
-                        serviceproviders.findOne( { _id: value.serviceProvider}, function ( err, reply )
-                        {
-                            if ( err ) console.log( err );
-                            else if ( !reply )
-                            {
-                                console.log( "No items returned" );
-                            } else
-                            {
-                                callback( reply );
+                        serviceproviders.findOne({ _id: value.serviceProvider }, function (err, reply) {
+                            if (err) console.log(err);
+                            else if (!reply) {
+                                responses.consoleFailure("No items returned");
+                            } else {
+                                callback(reply);
                             }
 
-                        })
+                        });
 
-
-
-
-
-                        res.status( 201 );
-                        res.json( value );
+                        res.status(201);
+                        require("../status")(req, res, "Rating saved", "success");
 
                         Value.aggregate( [
                             { $match: { "serviceProvider": value.serviceProvider } },
@@ -86,7 +78,7 @@ var ratingController = function ( Value )
                                 console.log(reply)
                                 if ( err )
                                 {
-                                    console.log( err );
+                                    responses.consoleFailure(err);
                                 }
                                 else
                                 {
@@ -98,11 +90,11 @@ var ratingController = function ( Value )
                                         {
                                             if ( err )
                                             {
-                                                console.log( err );
+                                                responses.consoleFailure(err);
                                             }
                                             else
                                             {
-                                                console.log( public );
+                                                responses.consoleSuccess("Public rating" + public._id + "updated");
                                             }
                                         })
                                     } else if ( replyLength != 0 )
@@ -111,12 +103,12 @@ var ratingController = function ( Value )
                                             { $set: { publicRating: data.publicRating } }, function ( err, numAffected )
                                         {
                                             if ( err )
-                                            {                           
-                                                console.log( err );
+                                            {
+                                                responses.consoleFailure(err);
                                             }
                                             else
                                             {
-                                                console.log( numAffected )
+                                                responses.consoleSuccess(numAffected);
                                             }
                                         })
                                     }

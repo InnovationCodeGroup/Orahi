@@ -41,9 +41,7 @@
     <Compile Include="controllers\admin\telcomController.js" />
     <Compile Include="controllers\financial\financialController.js" />
     <Compile Include="controllers\financial\makePayment.js" />
-    <Compile Include="controllers\readImage.js" />
     <Compile Include="controllers\serviceProvider\patchSPController.js" />
-    <Compile Include="controllers\responses.js" />
     <Compile Include="controllers\user\followController.js" />
     <Compile Include="controllers\user\getServiceController.js" />
     <Compile Include="controllers\user\getServicesAllgo.js" />
@@ -124,7 +122,6 @@
     <Compile Include="Algorithm\computeWeight.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
-    <Content Include="routes\image\readImage.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="authorisation\" />
@@ -142,7 +139,6 @@
     <Folder Include="routes\" />
     <Folder Include="routes\admin\" />
     <Folder Include="routes\financial\" />
-    <Folder Include="routes\image\" />
     <Folder Include="routes\serviceProvider\" />
     <Folder Include="routes\user\" />
     <Folder Include="routes\user\friends\" />

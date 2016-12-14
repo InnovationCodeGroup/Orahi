@@ -1,4 +1,5 @@
-﻿var ratingModel = require( '../../models/ratingModel' );
+﻿var responses = require("../responses")();
+var ratingModel = require('../../models/ratingModel');
 var friendshipModel = require( '../../models/friendshipModel' );
 
 var getController = function ( Value )
@@ -14,13 +15,11 @@ var getController = function ( Value )
 
             Value.find( query, function ( err, results )
             {
-                if ( err )
-                {
-                    res.status( 500 );
-                    res.send( err );
+                if (err) {
+                    responses.failureOutput(req, res, err);
                 }
                 else
-                    values = results;
+                    responses.successfulOutput(req, res, results);
             })
 
         }
