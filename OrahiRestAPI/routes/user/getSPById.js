@@ -1,9 +1,8 @@
-﻿var express = require( 'express' );
-
+﻿var express = require('express');
 /**
  * Start database models variables
  */
-var friendship = require( '../../../models/friendshipModel' );
+var ServiceProviderModel = require('../../models/serviceProviderModel');
 /**
  *End database models variables
  */
@@ -11,7 +10,7 @@ var friendship = require( '../../../models/friendshipModel' );
 /**
  * Start delete MiddleWare variables based on the various models in the database
  */
-var friendMiddleWare = require( '../../../middleWare/findByIdMiddleWare' )( friendship );
+var spMiddleWare = require('../../middleWare/findByIdMiddleWare')(ServiceProviderModel);
 /**
  * End delete MiddleWare variables
  */
@@ -20,35 +19,33 @@ var friendMiddleWare = require( '../../../middleWare/findByIdMiddleWare' )( frie
  * Start post Controllers variables based on the various models in the database
  */
 
-var friendController = require( '../../../controllers/user/patchFriendController' )();
+var spController = require('../../controllers/user/getSPByIdController')();
 
 /**
  * End post Controllers variables
  */
 
-
 /**
  * Start module main function
  */
-var patchRoutes = function ( app )
-{
-    var userAuth = require( '../../../middleWare/userAuth' )( app );
+var getRoutes = function (app) {
+    var userAuth = require('../../middleWare/userAuth')(app);
     /**
      * Start routes
      */
     var router = express.Router();
 
-    router.use( userAuth.use );
+    router.use(userAuth.use);
     /**
      *Start applying middleware
      */
-    router.use( '/patchFriend/:_Id', friendMiddleWare.use );
+    router.use('/getServiceProvider/:_Id', spMiddleWare.use);
 
     /**
      *End applying middleware
      */
-    router.route( '/patchFriend/:_Id' )
-        .patch( friendController.patch );
+    router.route('/getServiceProvider/:_Id')
+        .get(spController.get);
 
     /**
       * End routes
@@ -60,4 +57,4 @@ var patchRoutes = function ( app )
 /**
  * End module main function
  */
-module.exports = patchRoutes;
+module.exports = getRoutes;

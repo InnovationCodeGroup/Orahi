@@ -19,7 +19,10 @@ var userController = function ( app, imageDir )
     app.use( '/api/user', getSPRouter );
 
     var getRouterById = require( '../../routes/user/getRouteById' )( app );
-    app.use( '/api/user', getRouterById );
+    app.use('/api/user', getRouterById);
+
+    var getSPById = require('../../routes/user/getSPById')(app);
+    app.use('/api/user', getSPById);
 
     //Friend Module
     //Get a single user

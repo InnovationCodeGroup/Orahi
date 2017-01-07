@@ -1,0 +1,57 @@
+#!/bin/sh
+#
+##Store the arguments given to the script
+read prevCommitSHA latestCommitSHA fullbranchName
+branch=${fullbranchName##*/}
+
+WEBROOT="/home/orahiadmin/sites"
+PROJECT="OrahiRestAPI"
+LOGFILE="$WEBROOT/$PROJECT/post-receive.log"
+DEPLOYDIR=null
+PORT=null
+echo "log: $LOGFILE"
+
+##Record the fact that the push has been received
+echo "Received Push Request at $(date +"%F %T") for branch $branch" >> $LOGFILE
+#Log the branch name
+
+echo "------------------------------Deploy Start------------------------------" >> $LOGFILE
+if [ $branch = "master" ]
+then
+        DEPLOYDIR="$WEBROOT/$PROJECT/production"
+        PORT=1234
+fi
+if [ $branch = "test" ]
+then
+        DEPLOYDIR="$WEBROOT/$PROJECT/test"
+        PORT=4567
+fi
+if [ $DEPLOYDIR = null ]
+then
+        echo "Received branch $branch, not deploying."
+        exit
+fi
+
+sudo pm2 stop "${PROJECT}_${branch}" >> NULL
+echo "Stopped server at $(date + "%F %T")" >> $LOGFILE
+echo "Deploying to $DEPLOYDIR" >> $LOGFILE
+echo " - Starting code checkout" >> $LOGFILE
+GIT_WORK_TREE="$DEPLOYDIR" git checkout -f "$branch"
+echo " - Finished code checkout" >> $LOGFILE
+
+echo " - Starting npm install" >> $LOGFILE
+cd "$DEPLOYDIR/$PROJECT"
+rm -rf node_modules
+npm install >> $LOGFILE
+echo " - Finished npm install" >> $LOGFILE
+
+echo "Restarting the server using pm2 at $(date +"%F %T")" >> $LOGFILE
+
+#PORT = "$PORT"
+
+sudo pm2 start server.js --name "${PROJECT}_${branch}" >> $LOGFILE
+echo "Restart completed at $(date "%F %T")" >> $LOGFILE
+cd - 1>>/dev/null
+echo "--------------------------------Deploy Completed----------------------" >> $LOGFILE
+
+echo "Done. Run 'pm2 ls' on the server to see the process status"

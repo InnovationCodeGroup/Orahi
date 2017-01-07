@@ -60,7 +60,7 @@
 
     var authenticationFailed = function (req, res, message) {
         var message = { status: "failure", message: message }
-        res.status(403);
+        res.status(401);
         if (req.query.device === "WEB") {
             res.jsonp(message);
         } else {

@@ -47,6 +47,7 @@
     <Compile Include="controllers\user\followController.js" />
     <Compile Include="controllers\user\getServiceController.js" />
     <Compile Include="controllers\user\getServicesAllgo.js" />
+    <Compile Include="controllers\user\getSPByIdController.js" />
     <Compile Include="controllers\user\logsController.js" />
     <Compile Include="controllers\user\makePaymentController.js" />
     <Compile Include="controllers\user\patchFriendController.js" />
@@ -108,6 +109,7 @@
     <Compile Include="routes\user\getServicesRoutes.js" />
     <Compile Include="models\userModel.js" />
     <Compile Include="routes\serviceProvider\postSPRoutes.js" />
+    <Compile Include="routes\user\getSPById.js" />
     <Compile Include="routes\user\getTelecom.js" />
     <Compile Include="routes\user\patchUser.js" />
     <Compile Include="routes\user\Payment\makePayment.js" />
