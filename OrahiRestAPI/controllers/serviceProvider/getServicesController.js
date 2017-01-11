@@ -1,4 +1,6 @@
-﻿var getController = function (Value)
+﻿var responses = require("../responses")();
+
+var getController = function (Value)
 {
     var get = function ( req, res )
     {
