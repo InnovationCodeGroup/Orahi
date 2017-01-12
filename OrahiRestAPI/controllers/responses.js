@@ -78,6 +78,31 @@
         }
     }
 
+    var successfulGetImage = function (res, ext, data) {
+        if (ext === '.png') res.writeHead(200, { 'Content-Type': 'image/png' });
+        if (ext === '.jpg') res.writeHead(200, { 'Content-Type': 'image/jpg' });
+        res.end(data, 'binary');
+    }
+
+    var failureGetImage = function (req, res, err) {
+        var message;
+        if (err.code === "ENOENT") {
+            res.status(404);
+            var message = { success: "failure", message: "No such file or directory" };
+        } else {
+            res.status(400);
+            var message = {
+                success: "failure", message: err
+            };
+        }
+
+        if (req.query.device === "WEB") {
+            res.jsonp(message);
+        } else {
+            res.json(message);
+        }
+    }
+
     return {
         successfulInput: successfulInput,
         successfulOutput: successfulOutput,
@@ -87,7 +112,9 @@
         consoleFailure: consoleFailure,
         dataConflict: dataConflict,
         authenticationFailed: authenticationFailed,
-        authenticationApproved: authenticationApproved
+        authenticationApproved: authenticationApproved,
+        successfulGetImage: successfulGetImage,
+        failureGetImage: failureGetImage
     }
 
 }
