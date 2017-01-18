@@ -32,7 +32,7 @@ var userLogin = function (app)
                     throw err;
                 if ( !user )
                 {
-                    responses.authenticationFailed(req, res, 'User' + req.body.email + 'exist');
+                    responses.authenticationFailed(req, res, 'User ' + req.body.email + ' doesnot exist');
                 } else if ( user )
                 {
 

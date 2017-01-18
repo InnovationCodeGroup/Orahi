@@ -55,7 +55,11 @@ var userController = function ( app, imageDir )
 
     //Router to patch user providers
     var patchUser = require( '../../routes/user/patchUser' )( app, imageDir );
-    app.use( '/api/user', patchUser );
+    app.use('/api/user', patchUser);
+
+    //Get categories for services
+    var getCategories = require('../../routes/user/getCategories')(app);
+    app.use('/api/user', getCategories);
 
 }
 

@@ -33,7 +33,7 @@ var spLogin = function ( app )
                     throw err;
                 if ( !sp )
                 {
-                    responses.authenticationFailed(req, res, "Service Provider doesnot exist");
+                    responses.authenticationFailed(req, res, "Service Provider " + req.body.email + " doesnot exist");
                 } else if ( sp )
                 {
 

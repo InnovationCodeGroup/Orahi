@@ -9,6 +9,9 @@ var getController = function (Value)
         {
             query.serviceType = req.query.serviceType;
         }
+        if (req.query.category) {
+            query.category = req.query.category;
+        }
         if ( req.decoded._doc._id )
         {
             query.serviceProvider = req.decoded._doc._id;

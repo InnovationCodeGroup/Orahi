@@ -1,6 +1,9 @@
 ﻿var mongoose = require( 'mongoose' ),
     Schema = mongoose.Schema,
-    bcrypt = require( 'bcryptjs' );
+    bcrypt = require('bcryptjs');
+
+var serviceProvider = require('./serviceProviderModel');
+var category = require('./categoryModel');
 
 var serviceModel = new Schema( {
     serviceProvider: { type: mongoose.Schema.Types.ObjectId, ref: 'serviceProvider' },
@@ -49,6 +52,12 @@ var serviceModel = new Schema( {
     },
     rate:{
         type:String
+    },
+    category: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'category'
+    },
+    inCategory: {
+        type: Boolean, default: false
     }
 });
 

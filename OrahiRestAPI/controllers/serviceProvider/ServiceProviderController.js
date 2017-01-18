@@ -3,14 +3,14 @@
 var serviceProviderController = function ( app, imageDir )
 {
     imageDir = imageDir + '/serviceProviders/';
-    //Register service provider
 
-    var postRouter = require( '../../routes/serviceProvider/postSPRoutes' )( imageDir );
-    app.use( '/api/serviceProvider', postRouter );
+    //Register service provider
+    var postRouter = require('../../routes/serviceProvider/postSPRoutes')(imageDir);
+    app.use('/api/serviceProvider', postRouter);  
 
     //Login service provider
-    var spLoginRouter = require( '../../routes/serviceProvider/spLogin' )( app );
-    app.use( '/api/serviceProvider', spLoginRouter );
+    var spLoginRouter = require('../../routes/serviceProvider/spLogin')(app);
+    app.use('/api/serviceProvider', spLoginRouter);
 
     //Delete router for deleting services by the service provider
     var patchServiceProvider = require( '../../routes/serviceProvider/patchServiceProvider' )( app, imageDir );
@@ -38,7 +38,23 @@ var serviceProviderController = function ( app, imageDir )
 
     //Delete router for deleting services by the service provider
     var deleteService = require( '../../routes/serviceProvider/deleteService' )( app );
-    app.use( '/api/serviceProvider', deleteService );
+    app.use('/api/serviceProvider', deleteService);
+
+    //Add categories for services
+    var addCategories = require('../../routes/serviceProvider/addCategories')(app);
+    app.use('/api/serviceProvider', addCategories);
+
+    //Update categories for services
+    var updateCategories = require('../../routes/serviceProvider/updateCategories')(app);
+    app.use('/api/serviceProvider', updateCategories);
+
+    //Delete categories for services
+    var deleteCategories = require('../../routes/serviceProvider/deleteCategories')(app);
+    app.use('/api/serviceProvider', deleteCategories);
+
+    //Get categories for services
+    var getCategories = require('../../routes/serviceProvider/getCategories')(app);
+    app.use('/api/serviceProvider', getCategories);
 
 }
 
