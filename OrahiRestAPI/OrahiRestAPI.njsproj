@@ -52,6 +52,7 @@
     <Compile Include="controllers\user\getCategoriesController.js" />
     <Compile Include="controllers\user\getServiceController.js" />
     <Compile Include="controllers\user\getServicesAllgo.js" />
+    <Compile Include="controllers\user\getServicesController.js" />
     <Compile Include="controllers\user\getSPByIdController.js" />
     <Compile Include="controllers\user\logsController.js" />
     <Compile Include="controllers\user\makePaymentController.js" />
