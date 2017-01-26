@@ -30,7 +30,7 @@ var getController = function (Value) {
                 }
             );
         } else {
-            responses.failureOutput(req, res, "No service provider given");
+            responses.failureOutput(req, res, "No service provider given.");
         }
     }
     return {

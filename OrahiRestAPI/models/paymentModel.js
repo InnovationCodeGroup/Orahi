@@ -14,6 +14,7 @@ var paymentModel = new Schema( {
     depositorMobileMoney: { type: String },
     paymentMethod: { type: String },
     service: { type: mongoose.Schema.Types.ObjectId, ref: 'service' },
+    serviceName: { type: String },
     rate: { type: String },
     approved: { type: Boolean, default: false },
     transactionId: { type: String },
@@ -22,7 +23,6 @@ var paymentModel = new Schema( {
     ResponseMessage: { type: String },
     paymentDate: { type : Date, default: Date.now },
     bookDate: { type : Date, default: Date.now },
-    batch: { type: String },
     activity: { type: String }
 });
 

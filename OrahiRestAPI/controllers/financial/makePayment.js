@@ -19,7 +19,7 @@ var serviceproviders = require( '../../models/serviceProviderModel' );
 var mongoose = require( 'mongoose' );
 
 
-function makePayment( endpoint, method, data, view )
+function makePayment( endpoint, method, data, req, view )
 {
     var post_data = JSON.stringify( data );
     var headers = {};
@@ -129,7 +129,7 @@ function makePayment( endpoint, method, data, view )
                         {
                             if ( err )
                             {
-                                responses.failureInput(req, res, err);
+                                responses.consoleFailure(err);
                             }
                             else
                             {
@@ -140,7 +140,15 @@ function makePayment( endpoint, method, data, view )
                 }
             })
 
-            view.send( responseObject );         
+            var message = "A message is to be sent to " + responseObject.phonenumber + ". Complete the payment using USSD codes as instracted"
+            var message = { status: "success", message: message };
+            view.status(201);
+            if (req.query.device === "WEB") {
+                view.jsonp(message);
+            } else {
+                view.json(message);
+            }
+            //view.send( responseObject );         
         });
     });
 

@@ -40,21 +40,34 @@ var userLogin = function (app)
 
                     user.comparePassword( req.body.password, function ( err, isMatch )
                     {
-                        if ( err ) throw err;
-                        
-                        console.log( 'Password:', isMatch );
-                        if ( !isMatch )
-                        {
-                            responses.authenticationFailed(req, res, 'Incorrect password' );
-                        }
-                        //if the user is found and the password is right 
-                        //create token
-                        var token = jwt.sign( user, app.get( 'userSecret' ), {
-                            expiresIn: 10000 //expires in 24 hours
-                        });
+                        if (err) {
+                            console.log(err);
+                            responses.authenticationFailed(req, res, "Error accessing the token");
+                        } else {
+                            console.log('Password:', isMatch);
+                            if (!isMatch) {
+                                responses.authenticationFailed(req, res, 'Incorrect password');
+                            }
 
-                        //return the information including token as json
-                        responses.authenticationApproved(req, res, "Authentication approved", token);
+                            user = user.toObject();
+                            delete user.password;
+                            delete user._id;
+                            delete user.admin;
+                            delete user.adminReg;
+                            delete user.__v;
+
+                            console.log(user);
+                            //if the user is found and the password is right 
+                            //create token
+                            var token = jwt.sign(user, app.get('userSecret'), {
+                                expiresIn: 10000
+                                //expiresIn: 25  //expires in 24 hours
+                            });
+
+
+                            //return the information including token as json
+                            responses.successfulLogin(req, res, "Authentication approved", user, token);
+                        }                                         
                     });
                 }                
             });

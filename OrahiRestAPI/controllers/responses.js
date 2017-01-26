@@ -1,4 +1,15 @@
 ﻿var responses = function () {
+
+    var successfulLogin = function (req, res, message, user, token) {
+        var message = { status: "success", message: message, user: user, token: token };
+        res.status(201);
+        if (req.query.device === "WEB") {
+            res.jsonp(message);
+        } else {
+            res.json(message);
+        }
+    }
+
     var successfulInput = function (req, res, message) {
         var message = { status: "success", message: message };
         res.status(201);
@@ -104,6 +115,7 @@
     }
 
     return {
+        successfulLogin: successfulLogin,
         successfulInput: successfulInput,
         successfulOutput: successfulOutput,
         failureInput: failureInput,
