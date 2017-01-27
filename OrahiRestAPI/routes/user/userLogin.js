@@ -32,7 +32,7 @@ var userLogin = function (app)
                     throw err;
                 if ( !user )
                 {
-                    responses.authenticationFailed(req, res, 'User ' + req.body.email + ' doesnot exist');
+                    responses.authenticationFailed(req, res, 'User ' + req.body.email + ' does not exist');
                 } else if ( user )
                 {
 
@@ -47,26 +47,25 @@ var userLogin = function (app)
                             console.log('Password:', isMatch);
                             if (!isMatch) {
                                 responses.authenticationFailed(req, res, 'Incorrect password');
+                            } else {
+
+                                //if the user is found and the password is right 
+                                //create token
+                                var token = jwt.sign(user, app.get('userSecret'), {
+                                    expiresIn: 10000
+                                    //expiresIn: 25  //expires in 24 hours
+                                });
+
+                                var value = user.toObject();
+                                delete value.password;
+                                delete value._id;
+                                delete value.admin;
+                                delete value.adminReg;
+                                delete value.__v;
+
+                                //return the information including token as json
+                                responses.successfulLogin(req, res, "Authentication approved", value, token);
                             }
-
-                            user = user.toObject();
-                            delete user.password;
-                            delete user._id;
-                            delete user.admin;
-                            delete user.adminReg;
-                            delete user.__v;
-
-                            console.log(user);
-                            //if the user is found and the password is right 
-                            //create token
-                            var token = jwt.sign(user, app.get('userSecret'), {
-                                expiresIn: 10000
-                                //expiresIn: 25  //expires in 24 hours
-                            });
-
-
-                            //return the information including token as json
-                            responses.successfulLogin(req, res, "Authentication approved", user, token);
                         }                                         
                     });
                 }                
