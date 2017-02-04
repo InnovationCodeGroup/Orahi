@@ -43,18 +43,18 @@ var spLogin = function ( app )
                         if ( err ) throw err;
 
                         console.log( 'Password:', isMatch );
-                        if ( !isMatch )
-                        {
+                        if (!isMatch) {
                             responses.authenticationFailed(req, res, "Incorrect password");
-                        }
-                        //if the user is found and the password is right 
-                        //create token
-                        var token = jwt.sign( sp, app.get( 'serviceProviderSecret' ), {
-                            expiresIn: 10000 //expires in 24 hours
-                        });
+                        } else {
+                            //if the user is found and the password is right 
+                            //create token
+                            var token = jwt.sign(sp, app.get('serviceProviderSecret'), {
+                                expiresIn: 10000 //expires in 24 hours
+                            });
 
-                        //return the information including token as json
-                        responses.authenticationApproved(req, res, "Authentication approved", token);
+                            //return the information including token as json
+                            responses.authenticationApproved(req, res, "Authentication approved", token);
+                        }
                     });
                 }
             });
