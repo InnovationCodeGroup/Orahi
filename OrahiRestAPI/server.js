@@ -1,10 +1,13 @@
 ﻿var express = require( 'express' ),
     mongoose = require( 'mongoose' ),
-    bodyParser = require( 'body-parser' ),
+    bb = require( 'express-busboy' ),
+    dateFormat = require( 'dateformat' ),
     morgan = require( 'morgan' ),
     jwt = require( 'jsonwebtoken' ),
     config = require( './config' ),
-    User = require( './models/userModel' );
+    User = require( './models/userModel' ),
+    path = require( 'path' ),
+    fs = require('fs');
 
 var environment = process.env.ENV;
 var db = mongoose.connect( config.database ); //connect to the database
@@ -15,24 +18,24 @@ var port = process.env.PORT || 1337;
 app.set( 'userSecret', config.userSecret ); //secret variable
 app.set( 'adminSecret', config.adminSecret ); //secret variable
 app.set( 'serviceProviderSecret', config.serviceProviderSecret ); //secret variable
-app.use( bodyParser.urlencoded( { extended: true }) );
-app.use( bodyParser.json() );
+var filePath = path.join( __dirname, 'images/tmp' );
+var imageDir = ( path.join( __dirname, 'images' ) ).replace( /\\/g, '/' );
+
+require( './makeImageFolders' );
 
 
-require( './controllers/user/UserController' )(app);
-require( './controllers/serviceProvider/ServiceProviderController' )( app );
-require( './controllers/admin/adminController' )( app );
+bb.extend( app, {
+    upload: true,
+    path: filePath,
+    allowedPath: /./
+});
 
-//var postRouter = require( './routes/postRoutes' )();
-//var putRouter = require( './routes/putRoutes' )();
-//var patchRouter = require( './routes/patchRoutes' )();
-//var deleteRouter = require( './routes/deleteRoutes' )();
+require( './controllers/user/UserController' )( app, imageDir );
+require( './controllers/serviceProvider/ServiceProviderController' )( app, imageDir );
+require( './controllers/admin/adminController' )( app, imageDir );
+require( './controllers/readImage' )( app );
+require( './controllers/financial/financialController' )( app );
 
-
-//app.use( '/api', postRouter );
-//app.use( '/api', putRouter );
-//app.use( '/api', patchRouter );
-//app.use( '/api', deleteRouter );
 
 app.get( '/', function ( req, res )
 {

@@ -1,6 +1,7 @@
 ﻿var mongoose = require( 'mongoose' ),
     Schema = mongoose.Schema,
-    bcrypt = require( 'bcryptjs' );
+    bcrypt = require( 'bcryptjs' ),
+    SALT_WORK_FACTOR = 10;
 
 var serviceProviderModel = new Schema( {
     name: {
@@ -32,22 +33,52 @@ var serviceProviderModel = new Schema( {
             type: String
         }
     },
+    paymentBatch: {
+        type: String
+    },
     trust: {
-        type: false
+        type: Boolean, default: false
+    }, 
+    image: {
+        type: String
+    },
+    logo: {
+        type: String
     }
 });
 
 
-//methods
-// generating a has
-serviceProviderModel.methods.generateHash = function ( password )
+serviceProviderModel.pre( 'save', function ( next )
 {
-    return bcrypt.hashSync( password, bcrypt.genSaltSync( 8 ), null );
-}
-//checking the password is valid
-serviceProviderModel.methods.validPassword = function ( password )
-{
-    return bcrypt.compareSync( password, this.local.password );
-}
+    var serviceProvider = this;
 
-module.exports = mongoose.model( 'ServiceProvider', serviceProviderModel ); 
+    // only hash the password if it has been modified (or is new)
+    if ( !serviceProvider.isModified( 'password' ) ) return next();
+
+    // generate a salt
+    bcrypt.genSalt( SALT_WORK_FACTOR, function ( err, salt )
+    {
+        if ( err ) return next( err );
+
+        // hash the password using our new salt
+        bcrypt.hash( serviceProvider.password, salt, function ( err, hash )
+        {
+            if ( err ) return next( err );
+
+            // override the cleartext password with the hashed one
+            serviceProvider.password = hash;
+            next();
+        });
+    });
+});
+
+serviceProviderModel.methods.comparePassword = function ( candidatePassword, cb )
+{
+    bcrypt.compare( candidatePassword, this.password, function ( err, isMatch )
+    {
+        if ( err ) return cb( err );
+        cb( null, isMatch );
+    });
+};
+
+module.exports = mongoose.model( 'serviceproviders', serviceProviderModel ); 

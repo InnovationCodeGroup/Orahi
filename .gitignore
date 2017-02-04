@@ -3,3 +3,7 @@
 ################################################################################
 
 /OrahiRestAPI/node_modules
+/OrahiRestAPI/obj/*
+/OrahiRestAPI/images/*
+/OrahiRestAPI/l.git
+

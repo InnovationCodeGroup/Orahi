@@ -1,4 +1,6 @@
-﻿var findUserByEmail = function ( Value )
+﻿var responses = require("../controllers/responses")();
+
+var findUserByEmail = function (Value)
 {
     var userExists = false;
     var use = function ( req, res, next )
@@ -7,8 +9,7 @@
         {
             if ( err )
             {
-                res.status( 500 );
-                send( err );
+                responses.failureOutput(req, res, err);
             }
             else if ( value )
             {
@@ -18,8 +19,7 @@
             }
             else
             {
-                res.status( 500 );
-                send( 'No book found' );
+                responses.dataConflict(req, res, "No user with the email " + req.body.email + "found");
             }
         })
     }

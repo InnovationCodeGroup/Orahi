@@ -1,4 +1,5 @@
-﻿var jwt = require( 'jsonwebtoken' );
+﻿var jwt = require('jsonwebtoken');
+var responses = require("../controllers/responses")();
 
 var userAuth = function ( app )
 {
@@ -14,7 +15,7 @@ var userAuth = function ( app )
             //verifies secret and checks exp
             jwt.verify( token, app.get( 'adminSecret' ), function ( err, decoded )
             {
-                if ( err ) { return res.json( { success: false, message: 'Failed to authenticate token' }) }
+                if (err) responses.authenticationFailed(req, res, 'Failed to authenticate token');
                 else
                 {
                     //save to request for use in other routes
@@ -27,10 +28,7 @@ var userAuth = function ( app )
         {
             //if there is no token
             //return an error
-            return res.status( 403 ).send( {
-                success: false,
-                message: 'No token provided'
-            })
+            responses.authenticationFailed(req, res, 'No token provided');
         }
     }
 

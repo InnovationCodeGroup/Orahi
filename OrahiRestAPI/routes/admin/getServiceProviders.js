@@ -12,7 +12,7 @@ var ServiceProviderModel = require( '../../models/serviceProviderModel' );
 /**
  * Start get Controllers variables based on the various models in the database
  */
-var spController = require( '../../controllers/getController' )( ServiceProviderModel );
+var spController = require( '../../controllers/admin/getController' )( ServiceProviderModel );
 
 /**
  * End get Controllers variables

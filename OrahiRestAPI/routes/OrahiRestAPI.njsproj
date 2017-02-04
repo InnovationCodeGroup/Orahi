@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <Name>OrahiRestAPI</Name>
+    <RootNamespace>OrahiRestAPI</RootNamespace>
+    <Environment>ENV=Development</Environment>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>c8899e3b-fbfc-4e55-921c-27b86432c282</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>server.js</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
+    <ProjectView>ShowAllFiles</ProjectView>
+    <NodejsPort>1337</NodejsPort>
+    <StartWebBrowser>False</StartWebBrowser>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Algorithm\ratingsComputation.js" />
+    <Compile Include="config.js" />
+    <Compile Include="authorisation\emailVerification.js" />
+    <Compile Include="controllers\admin\adminController.js" />
+    <Compile Include="controllers\admin\getController.js" />
+    <Compile Include="controllers\admin\industrialRatingController.js" />
+    <Compile Include="controllers\admin\patchIndustrialRating.js" />
+    <Compile Include="controllers\admin\telcomController.js" />
+    <Compile Include="controllers\financial\financialController.js" />
+    <Compile Include="controllers\financial\makePayment.js" />
+    <Compile Include="controllers\serviceProvider\patchSPController.js" />
+    <Compile Include="controllers\user\followController.js" />
+    <Compile Include="controllers\user\getServiceController.js" />
+    <Compile Include="controllers\user\getServicesAllgo.js" />
+    <Compile Include="controllers\user\logsController.js" />
+    <Compile Include="controllers\user\makePaymentController.js" />
+    <Compile Include="controllers\user\patchFriendController.js" />
+    <Compile Include="controllers\user\patchUserController.js" />
+    <Compile Include="controllers\user\singleUserController.js" />
+    <Compile Include="controllers\user\getServiceByIdController.js" />
+    <Compile Include="controllers\user\getController.js" />
+    <Compile Include="controllers\serviceProvider\deleteServiceController.js" />
+    <Compile Include="controllers\serviceProvider\getServiceByIdController.js" />
+    <Compile Include="controllers\serviceProvider\getServicesController.js" />
+    <Compile Include="controllers\serviceProvider\patchServiceController.js" />
+    <Compile Include="controllers\serviceProvider\postSPController.js" />
+    <Compile Include="controllers\serviceProvider\postServiceController.js" />
+    <Compile Include="controllers\serviceProvider\putServiceController.js" />
+    <Compile Include="controllers\serviceProvider\ServiceProviderController.js" />
+    <Compile Include="controllers\user\getUserController.js" />
+    <Compile Include="controllers\user\postRatingController.js" />
+    <Compile Include="controllers\user\UserController.js" />
+    <Compile Include="makeImageFolders.js" />
+    <Compile Include="middleWare\adminAuth.js" />
+    <Compile Include="middleWare\findUsingIdMiddleWare.js" />
+    <Compile Include="middleWare\findByIdMiddleWare.js" />
+    <Compile Include="middleWare\findUserByEmail.js" />
+    <Compile Include="middleWare\imageUpload.js" />
+    <Compile Include="middleWare\serviceProviderAuth.js" />
+    <Compile Include="middleWare\userAuth.js" />
+    <Compile Include="models\friendshipModel.js" />
+    <Compile Include="models\industrialRating.js" />
+    <Compile Include="models\logsModel.js" />
+    <Compile Include="models\paymentModel.js" />
+    <Compile Include="models\publicRatingModel.js" />
+    <Compile Include="models\ratingModel.js" />
+    <Compile Include="models\serviceModel.js" />
+    <Compile Include="models\serviceProviderModel.js" />
+    <Compile Include="models\telcomModel.js" />
+    <Compile Include="models\tempUserModel.js" />
+    <Compile Include="routes\admin\adminLogin.js" />
+    <Compile Include="routes\admin\getServiceProviders.js" />
+    <Compile Include="routes\admin\getTelecom.js" />
+    <Compile Include="routes\admin\getUsers.js" />
+    <Compile Include="routes\admin\postIndustrialRating.js" />
+    <Compile Include="routes\admin\postTelcom.js" />
+    <Compile Include="routes\admin\updateIndustrialRating.js" />
+    <Compile Include="routes\financial\financialRouter.js" />
+    <Compile Include="routes\serviceProvider\deleteService.js" />
+    <Compile Include="routes\serviceProvider\getServiceById.js" />
+    <Compile Include="routes\serviceProvider\getServices.js" />
+    <Compile Include="routes\serviceProvider\patchService.js" />
+    <Compile Include="routes\serviceProvider\patchServiceProvider.js" />
+    <Compile Include="routes\serviceProvider\postService.js" />
+    <Compile Include="routes\serviceProvider\putService.js" />
+    <Compile Include="routes\serviceProvider\spLogin.js" />
+    <Compile Include="routes\user\friends\follow.js" />
+    <Compile Include="routes\user\friends\updateFriend.js" />
+    <Compile Include="routes\user\friends\getUser.js" />
+    <Compile Include="routes\user\getLogs.js" />
+    <Compile Include="routes\user\getRouteById.js" />
+    <Compile Include="routes\user\getServiceProviders.js" />
+    <Compile Include="routes\user\getServicesRoutes.js" />
+    <Compile Include="models\userModel.js" />
+    <Compile Include="routes\serviceProvider\postSPRoutes.js" />
+    <Compile Include="routes\user\getTelecom.js" />
+    <Compile Include="routes\user\patchUser.js" />
+    <Compile Include="routes\user\Payment\makePayment.js" />
+    <Compile Include="routes\user\Payment\paymentMethods.js" />
+    <Compile Include="routes\user\Payment\Products.js" />
+    <Compile Include="routes\user\postRating.js" />
+    <Compile Include="routes\user\userLogin.js" />
+    <Compile Include="routes\user\userSignUp.js" />
+    <Compile Include="server.js" />
+    <Compile Include="tests\EmailVerificationTest.js">
+      <SubType>Code</SubType>
+      <TestFramework>Mocha</TestFramework>
+    </Compile>
+    <Compile Include="Algorithm\computeWeight.js" />
+    <Content Include="package.json" />
+    <Content Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="authorisation\" />
+    <Folder Include="authorisation\admin\" />
+    <Folder Include="authorisation\serviceProvider\" />
+    <Folder Include="authorisation\user\" />
+    <Folder Include="controllers\admin\" />
+    <Folder Include="controllers\financial\" />
+    <Folder Include="controllers\user\" />
+    <Folder Include="controllers\serviceProvider\" />
+    <Folder Include="models\" />
+    <Folder Include="controllers\" />
+    <Folder Include="middleWare\" />
+    <Folder Include="Algorithm\" />
+    <Folder Include="routes\" />
+    <Folder Include="routes\admin\" />
+    <Folder Include="routes\financial\" />
+    <Folder Include="routes\serviceProvider\" />
+    <Folder Include="routes\user\" />
+    <Folder Include="routes\user\friends\" />
+    <Folder Include="routes\user\Payment\" />
+    <Folder Include="tests\" />
+    <Folder Include="typings\" />
+    <Folder Include="typings\globals\" />
+    <Folder Include="typings\globals\bcryptjs\" />
+    <Folder Include="typings\globals\body-parser\" />
+    <Folder Include="typings\globals\dateformat\" />
+    <Folder Include="typings\globals\express\" />
+    <Folder Include="typings\globals\jsonwebtoken\" />
+    <Folder Include="typings\globals\mocha\" />
+    <Folder Include="typings\globals\mongoose\" />
+    <Folder Include="typings\globals\morgan\" />
+    <Folder Include="typings\globals\nodemailer-stub-transport\" />
+    <Folder Include="typings\globals\nodemailer\" />
+    <Folder Include="typings\globals\node\" />
+    <Folder Include="typings\globals\should\" />
+    <Folder Include="typings\globals\supertest\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="typings\globals\bcryptjs\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\body-parser\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\dateformat\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\express\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\jsonwebtoken\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\mocha\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\mongoose\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\morgan\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\nodemailer-stub-transport\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\nodemailer\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\node\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\should\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\supertest\index.d.ts" />
+    <TypeScriptCompile Include="typings\index.d.ts" />
+  </ItemGroup>
+  <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
+  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:48022/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost:1337</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

@@ -10,6 +10,7 @@ var User = require( '../../models/userModel' );
  */
 
 var jwt = require('jsonwebtoken');
+var responses = require("../../controllers/responses")();
 
 
 var userLogin = function (app)
@@ -22,40 +23,64 @@ var userLogin = function (app)
 
     router.post( '/authenticate', function ( req, res )
     {
+        console.log(req.body);
+        var query = {};
+        if (req.body.email) {
+            query.email = req.body.email;
+        } else if (req.body.userName) {
+            query.userName = req.body.userName;
+        } else {
+            query.userName = "with no values provided"
+        }
         //find the user
-        User.findOne( {
-            email: req.body.email
-        }, function ( err, user )
+        User.findOne(query, function (err, user)
+        {
+            if (err)
+                responses.consoleFailure(err);
+            if ( !user )
             {
-                if ( err )
-                    throw err;
-                if ( !user )
-                {
-                    res.json( { success: false, message: 'User doesnot exist' });
-                } else if ( user )
-                {
+                if (query.email) {
+                    responses.authenticationFailed(req, res, 'User ' + query.email + ' does not exist');
+                } else{
+                    responses.authenticationFailed(req, res, 'User ' + query.userName + ' does not exist');
+                }         
+            } else if ( user )
+            {
 
-                    //check whether the passwords matches
-                    if ( user.password != req.body.password )
-                    {
-                        res.json( { success: false, message: 'Incorrect password' });
-                    } else
-                    {
-                        //if the user is found and the password is right 
-                        //create token
-                        var token = jwt.sign( user, app.get( 'userSecret' ), {
-                            expiresIn: 1440 //expires in 24 hours
-                        });
+                //check whether the passwords matches
 
-                        //return the information including token as json
-                        res.json( {
-                            success: true,
-                            message: 'Authentication approved',
-                            token: token,
-                        });
-                    }
-                }
-            });
+                user.comparePassword( req.body.password, function ( err, isMatch )
+                {
+                    if (err) {
+                        console.log(err);
+                        responses.authenticationFailed(req, res, "Error accessing the token");
+                    } else {
+                        console.log('Password:', isMatch);
+                        if (!isMatch) {
+                            responses.authenticationFailed(req, res, 'Incorrect password');
+                        } else {
+
+                            //if the user is found and the password is right 
+                            //create token
+                            var token = jwt.sign(user, app.get('userSecret'), {
+                                expiresIn: 10000
+                                //expiresIn: 25  //expires in 24 hours
+                            });
+
+                            var value = user.toObject();
+                            delete value.password;
+                            delete value._id;
+                            delete value.admin;
+                            delete value.adminReg;
+                            delete value.__v;
+
+                            //return the information including token as json
+                            responses.successfulLogin(req, res, "Authentication approved", value, token);
+                        }
+                    }                                         
+                });
+            }                
+        });
     });
 
     /**
