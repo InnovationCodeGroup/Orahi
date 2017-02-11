@@ -6,6 +6,12 @@
         res.json(message);
     }
 
+    var successfulLoginSP = function (req, res, message, serviceprovider, token) {
+        var message = { status: "success", message: message, serviceprovider: serviceprovider, token: token };
+        res.status(201);
+        res.json(message);
+    }
+
     var successfulInput = function (req, res, message) {
         var message = { status: "success", message: message };
         res.status(201);
@@ -84,6 +90,7 @@
 
     return {
         successfulLogin: successfulLogin,
+        successfulLoginSP: successfulLoginSP,
         successfulInput: successfulInput,
         successfulOutput: successfulOutput,
         failureInput: failureInput,
