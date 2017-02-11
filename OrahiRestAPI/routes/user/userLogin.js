@@ -69,7 +69,6 @@ var userLogin = function (app)
 
                             var value = user.toObject();
                             delete value.password;
-                            delete value._id;
                             delete value.admin;
                             delete value.adminReg;
                             delete value.__v;

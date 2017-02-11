@@ -52,8 +52,15 @@ var spLogin = function ( app )
                                 expiresIn: 10000 //expires in 24 hours
                             });
 
+                            var value = sp.toObject();
+                            delete value.password;
+                            delete value.__v;
+                            delete value.trust;
+                            delete value.paymentBatch;
+
+
                             //return the information including token as json
-                            responses.authenticationApproved(req, res, "Authentication approved", token);
+                            responses.successfulLoginSP(req, res, "Authentication approved", value, token);
                         }
                     });
                 }
