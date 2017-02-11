@@ -1,4 +1,5 @@
-﻿var express = require( 'express' ),
+﻿var express = require('express'),
+    cors = require('cors'),
     mongoose = require( 'mongoose' ),
     bb = require( 'express-busboy' ),
     dateFormat = require( 'dateformat' ),
@@ -15,6 +16,7 @@ var db = mongoose.connect( config.database ); //connect to the database
 var app = express();
 var port = process.env.PORT || 1337;
 
+app.use(cors());
 app.set( 'userSecret', config.userSecret ); //secret variable
 app.set( 'adminSecret', config.adminSecret ); //secret variable
 app.set( 'serviceProviderSecret', config.serviceProviderSecret ); //secret variable
